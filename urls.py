@@ -3,7 +3,7 @@ from django.contrib import admin
 import settings
 from django.conf.urls.static import static
 from signup.views import LandingView
-from event.views import DashboardView, CreateEventView, ReShoutView
+from event.views import DashboardView, CreateEventView, ReShoutView, EventListView, MobileCreateEventView
 
 admin.autodiscover()
 
@@ -16,9 +16,14 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'dashboard/', DashboardView.as_view(), name='dashboard'),
     url(r'create_event/', CreateEventView.as_view(), name='create_event'),
-    url(r'reshout/(?P<event_id>[\d]+)/', ReShoutView.as_view(), name='reshout')
+    url(r'reshout/(?P<event_id>[\d]+)/', ReShoutView.as_view(), name='reshout'),
+    url(r'^events/', EventListView.as_view(), name='event_api'),
+    url(r'^create/', MobileCreateEventView.as_view(), name='mobile_create')
 )
 
 urlpatterns += patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
 )
+
+
+

@@ -25,7 +25,7 @@ class Event(models.Model):
 
     def save(self):
         # sets is_active based on if the event is already happening
-        if datetime.datetime.now() < self.start_date:
+        if datetime.datetime.utcnow() < self.start_date:
             self.is_active = False
         else:
             self.is_active = True
@@ -36,7 +36,7 @@ class Event(models.Model):
             self.end_date = self.start_date + datetime.timedelta(minutes=30)
 
         # automatically set is_expired based on now and end_date
-        self.is_expired = datetime.datetime.now() > self.end_date
+        self.is_expired = datetime.datetime.utcnow() > self.end_date
         super(Event, self).save()
 
 
@@ -56,7 +56,7 @@ class ReShout(models.Model):
 
 class Account(models.Model):
     handle = models.CharField(unique=True, max_length=20)
-    user = models.ForeignKey('auth.User')
+    user = models.OneToOneField('auth.User')
     key = models.CharField(max_length=16, unique=True, blank=True)
 
     def __unicode__(self):

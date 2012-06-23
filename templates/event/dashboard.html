@@ -6,7 +6,9 @@
 {% for event in events %}
 <div style="margin-bottom:15px">
     <strong>{{event.name}}</strong> Created by: {{event.host}} <span class="badge badge-success">{{event.reshout_count}}</span><br /> @ {{event.start_date}}<br /><a href="#">{{event.location}}</a> </br>
+    {% if event.is_active %}
     <a href="{% url reshout event_id=event.id %}" class="btn btn-success">Reshout!</a>
+    {% endif %}
 </div>
 {% endfor %}
 
