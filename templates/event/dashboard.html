@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block nav_bar_content %}
+<a style="float:right" class="btn btn-primary" href="{% url logout %}">Logout</a>
+{% endblock %}
+{% block content %}
+{% for event in events %}
+<div style="margin-bottom:15px">
+    <strong>{{event.name}}</strong> Created by: {{event.host}} <span class="badge badge-success">{{event.reshout_count}}</span><br /> @ {{event.start_date}}<br /><a href="#">{{event.location}}</a> </br>
+    <a href="{% url reshout event_id=event.id %}" class="btn btn-success">Reshout!</a>
+</div>
+{% endfor %}
+
+
+<form action="{% url create_event %}" method="post">{% csrf_token %}
+{{ form.as_table }}
+</br>
+<input type="submit" class="btn btn-primary" value="Submit" />
+</form>
+
+{% endblock %}
