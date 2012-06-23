@@ -7,6 +7,7 @@ from django.views.generic.base import TemplateView, View
 from event.models import Event, Account, ReShout
 from event.forms import CreateEventForm
 
+
 class DashboardView(TemplateView):
     template_name = 'event/dashboard.html'
 
@@ -30,7 +31,7 @@ class CreateEventView(View):
             form.process(Account.objects.get(user=request.user))
         return HttpResponseRedirect(reverse('dashboard'))
 
-class ReshoutView(View):
+class ReShoutView(View):
 
     def get(self, request, *args, **kwargs):
         event_id = self.kwargs.get('event_id')
@@ -45,4 +46,3 @@ class ReshoutView(View):
         reshout.save()
         return HttpResponseRedirect(reverse('dashboard'))
 
-        pass
