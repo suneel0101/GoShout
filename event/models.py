@@ -56,7 +56,7 @@ class ReShout(models.Model):
 
 class Account(models.Model):
     handle = models.CharField(unique=True, max_length=20)
-    user = models.ForeignKey('auth.User')
+    user = models.OneToOneField('auth.User')
     key = models.CharField(max_length=16, unique=True, blank=True)
 
     def __unicode__(self):
