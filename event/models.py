@@ -3,6 +3,9 @@ import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
+# creates Mobile API Key
+def make_16_key():
+    return User.objects.make_random_password(length=16)
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
@@ -54,6 +57,11 @@ class ReShout(models.Model):
 class Account(models.Model):
     handle = models.CharField(unique=True, max_length=20)
     user = models.ForeignKey('auth.User')
+    key = models.CharField(max_length=16, unique=True, blank=True)
 
     def __unicode__(self):
         return self.handle
+
+    def save(self):
+        self.key = make_16_key()
+        super(Account, self).save()
