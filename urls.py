@@ -3,7 +3,12 @@ from django.contrib import admin
 import settings
 from django.conf.urls.static import static
 from signup.views import LandingView
+<<<<<<< HEAD
 from event.views import DashboardView, CreateEventView, ReShoutView, EventListView, MobileCreateEventView
+=======
+from event.views import DashboardView, CreateEventView, ReShoutView, EventListView
+
+>>>>>>> 60b62b0f04956ab48ddd4d690ce759007fc4782a
 admin.autodiscover()
 
 #urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
@@ -16,8 +21,12 @@ urlpatterns = patterns('',
     url(r'dashboard/', DashboardView.as_view(), name='dashboard'),
     url(r'create_event/', CreateEventView.as_view(), name='create_event'),
     url(r'reshout/(?P<event_id>[\d]+)/', ReShoutView.as_view(), name='reshout'),
+<<<<<<< HEAD
     url(r'^events/', EventListView.as_view(), name='event_api'),
     url(r'^create/', MobileCreateEventView.as_view(), name='mobile_create')
+=======
+    url(r'^events/', EventListView.as_view(), name='event_api')
+>>>>>>> 60b62b0f04956ab48ddd4d690ce759007fc4782a
 )
 
 urlpatterns += patterns('',

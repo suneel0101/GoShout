@@ -3,6 +3,7 @@ import simplejson as json
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.core.serializers import serialize
 
 from django.views.generic.base import TemplateView, View
 from event.models import Event, ReShout
@@ -28,6 +29,7 @@ class DashboardView(TemplateView):
             form.process(request.user.account)
         return HttpResponseRedirect(reverse('dashboard'))
 
+
     def compute_context(self, request, *args, **kwargs):
         context = {}
         context['events'] = self.events
@@ -42,6 +44,7 @@ class CreateEventView(View):
         if form.is_valid():
             form.process(request.user.account)
         return HttpResponseRedirect(reverse('dashboard'))
+
 
 
 class MobileCreateEventView(View):
