@@ -8,7 +8,6 @@ from django.views.generic.base import TemplateView, View
 from event.models import Event, ReShout
 from event.forms import CreateEventForm
 
-
 class DashboardView(TemplateView):
     template_name = 'mobile/index.html'
 
@@ -56,7 +55,6 @@ class MobileCreateEventView(View):
         form = CreateEventForm(request.POST)
         if form.is_valid():
             form.process(request.user.account)
-        import ipdb; ipdb.set_trace()
         return HttpResponseRedirect(reverse('dashboard'))
 
 

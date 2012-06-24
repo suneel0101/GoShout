@@ -1,0 +1,49 @@
+{% extends 'mobile/mobile_base.html' %}
+{% block extra_head %}
+<script src="/media/js/scripts.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="feed">
+	<div data-role="header" data-position="fixed">
+		<a href="#shout" data-role="button" id="shout_new_event_button">New Event!</a>
+	</div>
+	<div data-role="content">
+		<br />
+		<br />
+		<ul id="invite_list_ul" data-role="listview" data-filter="true">
+			<li><a href="#">hello there </a></li>
+		</ul>
+	</div>
+</div>
+<div data-role="page" id="shout">
+	<div data-role="header" data-position="fixed">
+		<a href="#" data-role="button" data-rel="back" id="shout_back_button">Back</a>
+	</div>
+	<div data-role="content">
+		<br />
+		<br />
+		<form action='/dashboard/' method='post'> {% csrf_token %}
+			Shout a new event:
+			<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="event_name_field">Event name:</label>
+				<input type="text" name="name" id="event_name_field" value="" placeholder="Event name"/>
+			</div>
+			<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="event_location_field">Event location:</label>
+				<input type="text" name="location" id="event_location_field" value="" placeholder="Event location"/>
+			</div>
+			<div data-role="fieldcontain">
+				<label for="event_time_field" class="select">Time:</label>
+				<select name="time" id="event_time_field">
+					<option value="now">Now</option>
+					<option value="3:00pm">3:00pm</option>
+					<option value="3:30pm">3:30pm</option>
+					<option value="4:00pm">4:00pm</option>
+				</select>
+			</div>
+			<button type="submit" data-theme="a" class="ui-btn-hidden" aria-disabled="false">Shout!</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
