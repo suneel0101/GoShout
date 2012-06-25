@@ -110,7 +110,6 @@ class ReShoutView(View):
         event = Event.objects.get(id=event_id)
         account = request.user.account
         timestamp = datetime.datetime.utcnow()
-        import ipdb; ipdb.set_trace()
         reshout = ReShout(
             event=event,
             account=account,
