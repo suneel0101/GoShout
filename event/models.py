@@ -61,7 +61,6 @@ class ReShout(models.Model):
 
     def save(self):
         super(ReShout, self).save()
-        import ipdb; ipdb.set_trace()
         self.event.end_date = self.timestamp + datetime.timedelta(minutes=30)
         self.event.save()
 
