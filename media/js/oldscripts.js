@@ -2,8 +2,12 @@ var prefix="";
 $(document).ready(function(){
     insertTimeChoices();
     bindNewEventButton();
-
 });
+
+$(document).on('click', '#log_out_button', function(){
+    window.location.href="/logout/";
+});
+
 
 $(document).delegate("#feed", "pagecreate", function(){
     //getEvents();

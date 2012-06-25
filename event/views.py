@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core.serializers import serialize
 
 from django.views.generic.base import TemplateView, View
-from event.models import Event, ReShout
+from event.models import Event, ReShout, make_16_key
 from event.forms import CreateEventForm
 
 class DashboardView(TemplateView):
@@ -26,6 +26,7 @@ class DashboardView(TemplateView):
         context = {}
         context['events'] = Event.objects.filter(is_expired=False).order_by('-end_date')
         context['form'] = CreateEventForm()
+        context['token'] = make_16_key()
         return context
 
 

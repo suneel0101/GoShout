@@ -7,6 +7,7 @@
 <div data-role="page" id="feed">
     <div data-role="header" data-position="fixed">
         <a href="#shout" data-role="button" id="shout_new_event_button">New Event!</a>
+        <a href="#" data-role="button" id="log_out_button">Logout</a>
     </div>
     <div data-role="content">
         <br />
@@ -17,7 +18,7 @@
                 
                     <p class="ui-li-aside ui-li-desc">
                         <strong>{{event.reshout_count}} Reshouts!</strong><br />
-                        <a href="{% url reshout event_id=event.id %}" data-role="button" data-inline="true" id="reshout_button">Reshout!</a>
+                        <a href="{% url reshout event_id=event.id %}{{ token }}/" data-role="button" data-inline="true" id="reshout_button" class="reshout_button">Reshout!</a>
                     </p>
                     <h3 class="ui-li-heading">{{event.name}}</h3>
                     <p class="ui-li-desc">Created by: <strong>{{event.host}}</strong>
