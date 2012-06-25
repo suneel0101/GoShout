@@ -1,0 +1,39 @@
+{% extends 'mobile/mobile_base.html' %}
+{% block extra_head %}
+{% endblock %}
+
+{% block content %}
+
+<div data-role="page" id="shout" data-url="/dashboard/">
+    <div data-role="header" data-position="fixed">
+        <a href="/dashboard/" data-role="button" data-rel="back" id="shout_back_button">Back</a>
+    </div>
+    <div data-role="content">
+        <br />
+        <br />
+        <form action='/create_form/' id="shout_form" method='post'> {% csrf_token %}
+            Shout a new event:
+            <div data-role="fieldcontain" class="ui-hide-label">
+                <label for="event_name_field">Event name:</label>
+                <input type="text" name="name" id="event_name_field" value="" placeholder="Event name"/>
+            </div>
+            <div data-role="fieldcontain" class="ui-hide-label">
+                <label for="event_location_field">Event location:</label>
+                <input type="text" name="location" id="event_location_field" value="" placeholder="Event location"/>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="event_time_field" class="select">Time:</label>
+                <select name="time" id="event_time_field">
+                    <option value="now">Now</option>
+                    <option value="3:00pm">3:00pm</option>
+                    <option value="3:30pm">3:30pm</option>
+                    <option value="4:00pm">4:00pm</option>
+                </select>
+            </div>
+            <button type="submit" data-theme="a" id="event_submit_button" class="ui-btn-hidden" aria-disabled="false">Shout!</button>
+        </form>
+    </div>
+    <script src="/media/js/shout.js"></script>
+</div>
+
+{% endblock %}

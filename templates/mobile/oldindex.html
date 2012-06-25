@@ -1,0 +1,63 @@
+{% extends 'mobile/mobile_base.html' %}
+{% block extra_head %}
+<script src="/media/js/oldscripts.js"></script>
+{% endblock %}
+
+{% block content %}
+<div data-role="page" id="feed">
+    <div data-role="header" data-position="fixed">
+        <a href="#shout" data-role="button" id="shout_new_event_button">New Event!</a>
+    </div>
+    <div data-role="content">
+        <br />
+        <br />
+        <ul id="invite_list_ul" data-role="listview" data-filter="true">
+            {% for event in events %}
+            <li>
+                
+                    <p class="ui-li-aside ui-li-desc">
+                        <strong>{{event.reshout_count}} Reshouts!</strong><br />
+                        <a href="{% url reshout event_id=event.id %}" data-role="button" data-inline="true" id="reshout_button">Reshout!</a>
+                    </p>
+                    <h3 class="ui-li-heading">{{event.name}}</h3>
+                    <p class="ui-li-desc">Created by: <strong>{{event.host}}</strong>
+                    </p>
+                    <p class="ui-li-desc">{{event.location}} @ <strong>{{event.pretty_start_time}}</strong>
+                    </p>
+                
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div data-role="page" id="shout">
+    <div data-role="header" data-position="fixed">
+        <a href="#" data-role="button" data-rel="back" id="shout_back_button">Back</a>
+    </div>
+    <div data-role="content">
+        <br />
+        <br />
+        <form action='/create_form/' id="shout_form" method='post'> {% csrf_token %}
+            Shout a new event:
+            <div data-role="fieldcontain" class="ui-hide-label">
+                <label for="event_name_field">Event name:</label>
+                <input type="text" name="name" id="event_name_field" value="" placeholder="Event name"/>
+            </div>
+            <div data-role="fieldcontain" class="ui-hide-label">
+                <label for="event_location_field">Event location:</label>
+                <input type="text" name="location" id="event_location_field" value="" placeholder="Event location"/>
+            </div>
+            <div data-role="fieldcontain">
+                <label for="event_time_field" id="time_label" class="select">Time:</label>
+                <select name="time" id="event_time_field">
+                    <option value="now">Now</option>
+                    <option value="3:00pm">3:00pm</option>
+                    <option value="3:30pm">3:30pm</option>
+                    <option value="4:00pm">4:00pm</option>
+                </select>
+            </div>
+            <button type="submit" data-theme="a" id="event_submit_button" class="ui-btn-hidden" aria-disabled="false">Shout!</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

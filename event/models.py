@@ -1,4 +1,5 @@
 import datetime
+from dateutil import tz
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -18,6 +19,14 @@ class Event(models.Model):
 
     def __unicode__(self):
         return u"{} ({}) @ {}, starting {}".format(self.name, self.host.handle, self.location, self.start_date)
+
+    @property
+    def pretty_start_time(self):
+        from_zone = tz.gettz('UTC')
+        to_zone = tz.gettz('America/New_York')
+        start_date = self.start_date.replace(tzinfo=from_zone)
+        local_start_date = start_date.astimezone(to_zone)
+        return local_start_date.strftime('%I:%M %p')
 
     @property
     def reshout_count(self):

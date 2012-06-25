@@ -1,24 +1,26 @@
 var prefix="";
 $(document).ready(function(){
     insertTimeChoices();
+    bindNewEventButton();
+
 });
 
-/*$(document).delegate("#feed", "pagecreate", function(){
-    getEvents();
-});*/
+$(document).delegate("#feed", "pagecreate", function(){
+    //getEvents();
+});
 
-/*    $(document).on('click', '#shout_new_event_button', function(){
+function bindNewEventButton(){
+    $(document).on('click', '#shout_new_event_button', function(){
         insertTimeChoices();
         refreshShoutForm();
     });
-}*/
+}
 
-/*function bindSubmitEventButton(){
-    $(document).on('click', '#event_submit_button', function(){
+function bindSubmitEventButton(){
+/*    $(document).on('click', '#event_submit_button', function(){
         refreshShoutForm();
-    });
-}/*
-
+    });*/
+}
 
 /* code for ajax submit
 function submitEventCreation(){
@@ -46,15 +48,15 @@ function submitEventCreation(){
     });
 }*/
 
-/*function getEvents(){
+function getEvents(){
     $.get(
         prefix+'/events/'
     ).done(function(data){
         appendFeedData(data);
     });
-}*/
+}
 
-/*function appendFeedData(data){
+function appendFeedData(data){
         $("#invite_list_ul").empty();
         var data_length=data.length;
         var append_html='';
@@ -76,7 +78,7 @@ function submitEventCreation(){
             append_html+='<li><a href="#"><p class="ui-li-aside ui-li-desc"><strong>'+data[i].reshout_count+' Reshouts!</strong></p><h3 class="ui-li-heading">'+data[i].name+'</h3><p class="ui-li-desc">Created by: <strong>'+data[i].host+'</strong></p><p class="ui-li-desc">in '+data[i].location+' @ <strong>'+time_string+'</strong></p></a></li>';
         }
         $("#invite_list_ul").append(append_html).trigger('create');
-}*/
+}
 
 function insertTimeChoices(){
     var d=new Date();
@@ -90,7 +92,7 @@ function insertTimeChoices(){
     var utcminute=dutc.getMinutes();
     $("#event_time_field").empty();
     var now_time_string=dutc.getDate()+":"+dutc.toTimeString();
-    var html='<option selected="selected" value="'+now_time_string+'">Now</option>';
+    var html='<option value="'+now_time_string+'">Now</option>';
     //round utc time to 15s;
     dutc.setMinutes(roundUTCTime(dutc));
     for(i=0; i<96; i++){
@@ -109,15 +111,16 @@ function insertTimeChoices(){
         var time_string=dutc.getDate()+":"+dutc.toTimeString();
         html+='<option value="'+time_string+'">'+adjustHours(hours)+':'+minutes+am_pm+'</option>';
     }
-    $("#event_time_field").append(html);
+    $("#event_time_field").append(html).trigger('create');
+    $(".ui-select").find("span .ui-btn-text").html("Now");
 
 
 }
 
-/*function refreshShoutForm(){
+function refreshShoutForm(){
     $("#event_name_field").val("");
     $("#event_location_field").val("");
-}*/
+}
 
 function roundUTCTime(utc){
     var minutes=parseInt(utc.getMinutes());

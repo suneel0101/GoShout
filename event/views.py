@@ -10,20 +10,12 @@ from event.models import Event, ReShout
 from event.forms import CreateEventForm
 
 class DashboardView(TemplateView):
-    template_name = 'mobile/index.html'
+    template_name = 'mobile/oldindex.html'
 
     def get(self, request, *args, **kwargs):
-        #self.events = Event.objects.filter(is_expired=False).order_by('start_date')
-        #return self.render_to_response(self.compute_context(request, *args, **kwargs))
-        return self.render_to_response({})
+        return self.render_to_response(self.compute_context(request, *args, **kwargs))
 
     def post(self, request, *args, **kwargs):
-        time = request.POST.get('time')
-        components = time.split(':')
-        hour = int(components[0])
-        minute = int(components[1])
-        now = datetime.datetime.now()
-        start_date = datetime.datetime(now.year, now.month, now.day, hour, minute)
         form = CreateEventForm(request.POST)
         if form.is_valid():
             form.process(request.user.account)
@@ -32,7 +24,7 @@ class DashboardView(TemplateView):
 
     def compute_context(self, request, *args, **kwargs):
         context = {}
-        context['events'] = self.events
+        context['events'] = Event.objects.filter(is_expired=False).order_by('-end_date')
         context['form'] = CreateEventForm()
         return context
 
@@ -46,15 +38,28 @@ class CreateEventView(View):
         return HttpResponseRedirect(reverse('dashboard'))
 
 
+class CreateFormView(TemplateView):
+    template_name = 'mobile/shout.html'
+
+    def get(self, request, *args, **kwargs):
+        return self.render_to_response({})
+
+    def post(self, request, *args, **kwargs):
+        form = CreateEventForm(request.POST)
+        if form.is_valid():
+            form.process(request.user.account)
+        return HttpResponseRedirect(reverse('dashboard'))
+
 
 class MobileCreateEventView(View):
     def post(self, request, *args, **kwargs):
         time = request.POST.get('time')
         components = time.split(':')
-        hour = int(components[0])
-        minute = int(components[1])
+        day = int(components[0])
+        hour = int(components[1])
+        minute = int(components[2])
         now = datetime.datetime.now()
-        start_date = datetime.datetime(now.year, now.month, now.day, hour, minute)
+        start_date = datetime.datetime(now.year, now.month, day, hour, minute)
         form = CreateEventForm(request.POST)
         if form.is_valid():
             form.process(request.user.account)
