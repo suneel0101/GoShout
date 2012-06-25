@@ -124,7 +124,8 @@ INSTALLED_APPS = (
      'event',
      'signup',
      'gunicorn',
-     'south'
+     'south',
+     'dateutil',
 )
 
 # A sample logging configuration. The only tangible logging
