@@ -3,8 +3,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as auth_logout
 from django.core.urlresolvers import reverse
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from event.models import Account
+from event.views import DashboardView
 
 
 def logout(request):
@@ -17,9 +18,9 @@ class LandingView(View):
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return HttpResponseRedirect(reverse('dashboard'))
-        context = {}
+            context = {}
         return render(request, self.template, context)
+
 
     def post(self, request, *args, **kwargs):
         username = request.POST['username']

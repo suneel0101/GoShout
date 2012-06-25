@@ -4,7 +4,6 @@ $(document).ready(function(){
 
 
 function insertTimeChoices(){
-    alert('1');
     var d=new Date();
     var hours=parseInt(d.getHours());
     var minutes=d.getMinutes();

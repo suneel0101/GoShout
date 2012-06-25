@@ -4,9 +4,11 @@ from dateutil import tz
 from django.db import models
 from django.contrib.auth.models import User
 
+
 # creates Mobile API Key
 def make_16_key():
     return User.objects.make_random_password(length=16)
+
 
 class Event(models.Model):
     name = models.CharField(max_length=200)
@@ -15,7 +17,7 @@ class Event(models.Model):
     host = models.ForeignKey('event.Account')
     location = models.CharField(max_length=300)
     is_active = models.BooleanField(default=False, blank=True)
-    is_expired = models.BooleanField(default=False, blank=True) 
+    is_expired = models.BooleanField(default=False, blank=True)
 
     def __unicode__(self):
         return u"{} ({}) @ {}, starting {}".format(self.name, self.host.handle, self.location, self.start_date)
@@ -52,13 +54,14 @@ class Event(models.Model):
 class ReShout(models.Model):
     event = models.ForeignKey('event.Event')
     account = models.ForeignKey('event.Account')
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
     def __unicode__(self):
         return u"{} RS {}".format(self.event.name, self.account)
 
     def save(self):
         super(ReShout, self).save()
+        import ipdb; ipdb.set_trace()
         self.event.end_date = self.timestamp + datetime.timedelta(minutes=30)
         self.event.save()
 

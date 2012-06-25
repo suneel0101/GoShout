@@ -1,16 +1,20 @@
 {% extends 'mobile/mobile_base.html' %}
+{% block extra_head %}
+<script type="text/javascript" src="/media/js/oldscripts.js"></script>
+{% endblock %}
 {% block content %}
 <div data-role="page" id="login">
 	<div data-role="content">
-		<form action="." method="post"> {% csrf_token %}
+		<form action="/" method="post"> {% csrf_token %}
 			<div data-role="fieldcontain">
 				<label for="handle_login">Handle:</label>
 				<input type="text" placeholder="handle" name="username" id="handle_login" value=""  />
 				<label for="password_login">Password:</label>
 				<input type="password" placeholder="password" name="password" id="password_login" value=""  />
 			</div>
-			<button type="submit" data-theme="a" class="ui-btn-hidden" aria-disabled="false">Submit</button>
+			<button type="submit" data-theme="a" class="ui-btn-hidden" aria-disabled="false">Enter</button>
 		</form>
+		<div>If this is your first time, enter a handle and a password and your account will be automatically created!</div>
 	</div>
 </div>
 {% endblock %}

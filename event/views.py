@@ -6,27 +6,63 @@ from django.core.urlresolvers import reverse
 from django.core.serializers import serialize
 
 from django.views.generic.base import TemplateView, View
-from event.models import Event, ReShout, make_16_key
+from event.models import Event, ReShout, make_16_key, Account
 from event.forms import CreateEventForm
+
+from django.contrib.auth.models import User
+
+from django.contrib.auth import authenticate, login
 
 class DashboardView(TemplateView):
     template_name = 'mobile/oldindex.html'
 
     def get(self, request, *args, **kwargs):
-        return self.render_to_response(self.compute_context(request, *args, **kwargs))
+        if not request.user.is_authenticated():
+            context = {}
+            self.template_name = 'mobile/login.html'
+            return self.render_to_response(context)
+        else:
+            self.template_name = 'mobile/oldindex.html'
+            # Nonscalable but okay for the present; auto_expire upon each GET request to /dashboard/
+            now = datetime.datetime.utcnow()
+            events = Event.objects.filter(end_date__lt=now).update(is_expired=True, is_active=False) 
+            return self.render_to_response(self.compute_context(request, *args, **kwargs))
 
     def post(self, request, *args, **kwargs):
-        form = CreateEventForm(request.POST)
-        if form.is_valid():
-            form.process(request.user.account)
-        return HttpResponseRedirect(reverse('dashboard'))
+        if not request.user.is_authenticated():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('dashboard'))
+            else:
+                try:
+                    User.objects.get(username=username)
+                except User.DoesNotExist:
+                    new_user = User.objects.create_user(username=username, password=password)
+                    new_account = Account(user=new_user, handle=username)
+                    new_account.save()
+                    logged_in_user = authenticate(username=username, password=password)
+                    login(request, logged_in_user)
+
+                return HttpResponseRedirect(reverse('dashboard'))
+        else:
+            form = CreateEventForm(request.POST)
+            if form.is_valid():
+                form.process(request.user.account)
+            return HttpResponseRedirect(reverse('dashboard'))
 
 
     def compute_context(self, request, *args, **kwargs):
         context = {}
-        context['events'] = Event.objects.filter(is_expired=False).order_by('-end_date')
+        context['active_events'] = Event.objects.filter(is_active=True, is_expired=False).order_by('-end_date')
+        context['upcoming_events'] = Event.objects.filter(is_active=False, is_expired=False).order_by('start_date')
         context['form'] = CreateEventForm()
-        context['token'] = make_16_key()
+        context['token'] = make_16_key() 
+        first_visit_to_dashboard = bool(not request.session.get('key'))
+        context['first_visit'] = '1' if first_visit_to_dashboard else '0'
+        request.session['key'] = request.user.account.key
         return context
 
 
@@ -73,7 +109,8 @@ class ReShoutView(View):
         event_id = self.kwargs.get('event_id')
         event = Event.objects.get(id=event_id)
         account = request.user.account
-        timestamp = datetime.datetime.now()
+        timestamp = datetime.datetime.utcnow()
+        import ipdb; ipdb.set_trace()
         reshout = ReShout(
             event=event,
             account=account,

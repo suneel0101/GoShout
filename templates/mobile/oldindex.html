@@ -1,8 +1,7 @@
 {% extends 'mobile/mobile_base.html' %}
-{% block extra_head %}
-<script src="/media/js/oldscripts.js"></script>
-{% endblock %}
 
+{% block extra_head %}
+{% endblock%}
 {% block content %}
 <div data-role="page" id="feed">
     <div data-role="header" data-position="fixed">
@@ -13,12 +12,13 @@
         <br />
         <br />
         <ul id="invite_list_ul" data-role="listview" data-filter="true">
-            {% for event in events %}
+            <li data-role="list-divider">Happening now</li>
+            {% for event in active_events %}
             <li>
                 
                     <p class="ui-li-aside ui-li-desc">
                         <strong>{{event.reshout_count}} Reshouts!</strong><br />
-                        <a href="{% url reshout event_id=event.id %}{{ token }}/" data-role="button" data-inline="true" id="reshout_button" class="reshout_button">Reshout!</a>
+                        <a href="{% url reshout event_id=event.id %}{{ token }}/" data-role="button" data-theme="b" data-inline="true" id="reshout_button" class="reshout_button">Reshout!</a>
                     </p>
                     <h3 class="ui-li-heading">{{event.name}}</h3>
                     <p class="ui-li-desc">Created by: <strong>{{event.host}}</strong>
@@ -28,7 +28,21 @@
                 
             </li>
             {% endfor %}
+            <li data-role="list-divider">Happening later</li>
+            {% for event in upcoming_events %}
+            <li>
+                <h3 class="ui-li-heading">{{event.name}}</h3>
+                <p class="ui-li-desc">Created by: <strong>{{event.host}}</strong>
+                </p>
+                <p class="ui-li-desc">{{event.location}} @ <strong>{{event.pretty_start_time}}</strong>
+                </p>
+                
+            </li>
+            {% endfor %}
+
+
         </ul>
+
     </div>
 </div>
 <div data-role="page" id="shout">
@@ -61,4 +75,5 @@
         </form>
     </div>
 </div>
+<script src="/media/js/oldscripts.js"></script>
 {% endblock %}
